@@ -13,9 +13,9 @@ import EmissionsBySourceChart from "@/components/dashboard/EmissionsBySourceChar
 import { useDashboardData } from "@/hooks/useDashboardData";
 
 export default function Home() {
-  const { companies, loading, error, refetch } = useDashboardData();
+  const { countries, companies, loading, error, refetch } = useDashboardData();
   const [selectedCompany, setSelectedCompany] = useState("all");
-  const [selectedCountry] = useState("all");
+  const [selectedCountry, setSelectedCountry] = useState("all");
   const [selectedMonth] = useState("all");
   const [selectedSource] = useState("all");
 
@@ -29,8 +29,11 @@ export default function Home() {
         <>
           <DashboardFilters
             companies={companies}
+            countries={countries}
             selectedCompany={selectedCompany}
+            selectedCountry={selectedCountry}
             onCompanyChange={setSelectedCompany}
+            onCountryChange={setSelectedCountry}
           />
 
           <p>
