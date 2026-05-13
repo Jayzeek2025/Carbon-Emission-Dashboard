@@ -9,20 +9,33 @@ type DashboardFiltersProps = {
     name: string;
   }[];
 
+  months: string[];
+  sources: string[];
+  selectedMonth: string;
+  selectedSource: string;
+
   selectedCompany: string;
   selectedCountry: string;
 
   onCompanyChange: (value: string) => void;
   onCountryChange: (value: string) => void;
+  onMonthChange: (value: string) => void;
+  onSourceChange: (value: string) => void;
 };
 
 export default function DashboardFilters({
   companies,
   countries,
+  months,
+  sources,
   selectedCompany,
   selectedCountry,
+  selectedMonth,
+  selectedSource,
   onCompanyChange,
   onCountryChange,
+  onMonthChange,
+  onSourceChange,
 }: DashboardFiltersProps) {
   return (
     <div className="dashboard-filters">
@@ -48,6 +61,32 @@ export default function DashboardFilters({
         {countries.map((country) => (
           <option key={country.code} value={country.code}>
             {country.name}
+          </option>
+        ))}
+      </select>
+
+      <select
+        value={selectedMonth}
+        onChange={(event) => onMonthChange(event.target.value)}
+      >
+        <option value="all">All Months</option>
+
+        {months.map((month) => (
+          <option key={month} value={month}>
+            {month}
+          </option>
+        ))}
+      </select>
+
+      <select
+        value={selectedSource}
+        onChange={(event) => onSourceChange(event.target.value)}
+      >
+        <option value="all">All Sources</option>
+
+        {sources.map((source) => (
+          <option key={source} value={source}>
+            {source}
           </option>
         ))}
       </select>

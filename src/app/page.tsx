@@ -16,8 +16,18 @@ export default function Home() {
   const { countries, companies, loading, error, refetch } = useDashboardData();
   const [selectedCompany, setSelectedCompany] = useState("all");
   const [selectedCountry, setSelectedCountry] = useState("all");
-  const [selectedMonth] = useState("all");
-  const [selectedSource] = useState("all");
+  const [selectedMonth, setSelectedMonth] = useState("all");
+  const [selectedSource, setSelectedSource] = useState("all");
+
+  const allEmissions = companies.flatMap((company) => company.emissions);
+
+  const months = Array.from(
+    new Set(allEmissions.map((emission) => emission.yearMonth)),
+  ).sort();
+
+  const sources = Array.from(
+    new Set(allEmissions.map((emission) => emission.source)),
+  ).sort();
 
   return (
     <AppShell>
@@ -30,10 +40,16 @@ export default function Home() {
           <DashboardFilters
             companies={companies}
             countries={countries}
+            months={months}
+            sources={sources}
             selectedCompany={selectedCompany}
             selectedCountry={selectedCountry}
+            selectedMonth={selectedMonth}
+            selectedSource={selectedSource}
             onCompanyChange={setSelectedCompany}
             onCountryChange={setSelectedCountry}
+            onMonthChange={setSelectedMonth}
+            onSourceChange={setSelectedSource}
           />
 
           <p>
