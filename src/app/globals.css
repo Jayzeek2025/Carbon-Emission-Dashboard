@@ -3,4 +3,66 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
+  background: #07111f;
+  color: white;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  font: inherit;
+}
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.app-sidebar {
+  width: 240px;
+  background: #0b1728;
+  border-right: 1px solid #1f2c3d;
+  padding: 24px;
+}
+
+.app-sidebar h2 {
+  margin-top: 0;
+  margin-bottom: 32px;
+}
+
+.app-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.app-nav button {
+  background: transparent;
+  border: 1px solid #223248;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.app-content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  height: 80px;
+  border-bottom: 1px solid #1f2c3d;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+}
+
+.app-main {
+  flex: 1;
+  padding: 24px;
 }
