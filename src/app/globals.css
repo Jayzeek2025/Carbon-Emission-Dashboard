@@ -32,6 +32,18 @@ button {
   margin-bottom: 32px;
 }
 
+.app-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.mobile-menu-button,
+.mobile-close-button {
+  display: none;
+}
+
 .app-nav {
   display: flex;
   flex-direction: column;
@@ -70,12 +82,6 @@ button {
   border-color: #34d399;
   transform: translateX(2px);
   transition: all 0.2s ease;
-}
-
-.app-content-wrapper {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
 }
 
 .app-header {
@@ -137,4 +143,81 @@ button {
 .app-main {
   flex: 1;
   padding: 24px;
+}
+
+.app-content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.mobile-nav-toggle {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .app-shell {
+    display: block;
+  }
+
+  .app-sidebar {
+    display: none;
+  }
+
+  .mobile-nav-toggle:checked ~ .app-sidebar {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 260px;
+    height: 100vh;
+  }
+
+  .mobile-sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: none;
+    background: rgba(2, 6, 23, 0.72);
+  }
+
+  .mobile-nav-toggle:checked ~ .mobile-sidebar-overlay {
+    display: block;
+  }
+
+  .mobile-menu-button {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 80;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid #223248;
+    border-radius: 12px;
+    background: #0b1728;
+    color: white;
+    cursor: pointer;
+  }
+
+.mobile-close-button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #223248;
+  border-radius: 10px;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+  position: relative;
+  top: -15px;
+}
+
+  .app-header {
+    padding-left: 76px;
+  }
 }

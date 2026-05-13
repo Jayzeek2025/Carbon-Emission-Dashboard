@@ -8,6 +8,26 @@ type AppShellProps = {
 export default function AppShell({ children }: AppShellProps) {
   return (
     <div className="app-shell">
+      <input
+        id="mobile-nav-toggle"
+        className="mobile-nav-toggle"
+        type="checkbox"
+      />
+
+      <label
+        className="mobile-menu-button"
+        htmlFor="mobile-nav-toggle"
+        aria-label="Open navigation menu"
+      >
+        ☰
+      </label>
+
+      <label
+        className="mobile-sidebar-overlay"
+        htmlFor="mobile-nav-toggle"
+        aria-label="Close navigation menu"
+      />
+
       <Sidebar />
 
       <div className="app-content-wrapper">
