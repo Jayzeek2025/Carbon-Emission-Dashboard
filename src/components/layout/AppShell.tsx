@@ -1,3 +1,5 @@
+import Sidebar from "@/components/layout/Sidebar";
+
 type AppShellProps = {
   children: React.ReactNode;
 };
@@ -5,17 +7,7 @@ type AppShellProps = {
 export default function AppShell({ children }: AppShellProps) {
   return (
     <div className="app-shell">
-      <aside className="app-sidebar">
-        <h2>CarbonVista</h2>
-
-        <nav className="app-nav">
-          <button>Dashboard</button>
-          <button>Companies</button>
-          <button>Reports</button>
-          <button>Posts</button>
-          <button>Settings</button>
-        </nav>
-      </aside>
+      <Sidebar />
 
       <div className="app-content-wrapper">
         <header className="app-header">
