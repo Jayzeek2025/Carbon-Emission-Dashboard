@@ -5,6 +5,7 @@ import SummaryCards from "@/components/dashboard/SummaryCards";
 
 import ErrorState from "@/components/ui/ErrorState";
 import LoadingState from "@/components/ui/LoadingState";
+import MonthlyEmissionsChart from "@/components/dashboard/MonthlyEmissionsChart";
 
 import { useDashboardData } from "@/hooks/useDashboardData";
 
@@ -23,7 +24,10 @@ export default function Home() {
       {!loading && !error && (
   <>
     <SummaryCards companies={companies} />
+
+    <MonthlyEmissionsChart companies={companies} />
   </>
+  
 )}
     </AppShell>
   );
