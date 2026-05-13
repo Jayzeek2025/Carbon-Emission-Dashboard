@@ -1,0 +1,59 @@
+<svg width="700" height="700" viewBox="0 0 700 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="sphere" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#39ff14" stop-opacity="0.5"/>
+      <stop offset="38%" stop-color="#39ff14" stop-opacity="0.18"/>
+      <stop offset="78%" stop-color="#39ff14" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#39ff14" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <clipPath id="globeClip">
+      <circle cx="350" cy="350" r="245"/>
+    </clipPath>
+  </defs>
+
+  <circle cx="350" cy="350" r="255" fill="url(#sphere)" filter="url(#softGlow)"/>
+  <circle cx="350" cy="350" r="245" fill="rgba(57,255,20,0.05)" stroke="#39ff14" stroke-opacity="0.75" stroke-width="3"/>
+
+  <g clip-path="url(#globeClip)">
+    <path d="M160 210C185 172 230 150 278 150C318 151 338 170 368 180C398 190 434 181 462 205C490 229 488 267 466 286C442 307 404 295 382 318C358 343 382 382 355 409C328 435 287 416 268 386C248 355 220 350 193 335C157 315 139 246 160 210Z" fill="#39ff14" fill-opacity="0.34"/>
+
+    <path d="M213 202C239 190 266 196 285 214C300 228 308 250 294 263C279 278 254 269 239 284C222 301 241 326 224 341C207 357 174 340 165 315C155 286 171 222 213 202Z" fill="#39ff14" fill-opacity="0.24"/>
+
+    <path d="M404 155C458 167 508 205 535 258C499 246 466 245 440 224C413 202 405 178 404 155Z" fill="#39ff14" fill-opacity="0.32"/>
+
+    <path d="M466 287C510 292 548 320 565 360C530 350 498 353 473 373C451 391 433 419 398 412C368 406 356 374 373 347C390 319 421 291 466 287Z" fill="#39ff14" fill-opacity="0.28"/>
+
+    <path d="M280 410C312 430 332 469 316 505C295 552 231 525 204 489C177 453 181 414 213 398C238 386 257 396 280 410Z" fill="#39ff14" fill-opacity="0.32"/>
+
+    <path d="M360 438C392 428 423 443 437 473C449 501 434 536 398 550C366 562 336 548 331 517C326 483 334 448 360 438Z" fill="#39ff14" fill-opacity="0.2"/>
+
+    <path d="M126 350C160 364 187 390 194 427C165 420 133 400 112 374C100 358 108 344 126 350Z" fill="#39ff14" fill-opacity="0.22"/>
+
+    <path d="M520 420C552 438 578 468 590 506C548 493 514 470 489 438C497 421 508 414 520 420Z" fill="#39ff14" fill-opacity="0.18"/>
+
+    <path d="M105 350H595" stroke="#39ff14" stroke-opacity="0.28" stroke-width="1"/>
+    <path d="M124 280H576" stroke="#39ff14" stroke-opacity="0.18" stroke-width="1"/>
+    <path d="M124 420H576" stroke="#39ff14" stroke-opacity="0.18" stroke-width="1"/>
+    <path d="M178 210H522" stroke="#39ff14" stroke-opacity="0.12" stroke-width="1"/>
+    <path d="M178 490H522" stroke="#39ff14" stroke-opacity="0.12" stroke-width="1"/>
+
+    <ellipse cx="350" cy="350" rx="80" ry="245" stroke="#39ff14" stroke-opacity="0.22" stroke-width="1"/>
+    <ellipse cx="350" cy="350" rx="150" ry="245" stroke="#39ff14" stroke-opacity="0.16" stroke-width="1"/>
+    <ellipse cx="350" cy="350" rx="220" ry="245" stroke="#39ff14" stroke-opacity="0.12" stroke-width="1"/>
+  </g>
+
+  <circle cx="350" cy="350" r="248" stroke="#39ff14" stroke-opacity="0.75" stroke-width="2" filter="url(#softGlow)"/>
+  <circle cx="350" cy="350" r="270" stroke="#39ff14" stroke-opacity="0.16" stroke-width="1"/>
+
+  <path d="M130 430C230 610 490 625 590 430" stroke="#39ff14" stroke-opacity="0.16" stroke-width="2"/>
+  <path d="M125 270C225 90 485 75 590 270" stroke="#39ff14" stroke-opacity="0.12" stroke-width="2"/>
+</svg>

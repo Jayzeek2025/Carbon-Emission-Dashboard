@@ -15,9 +15,59 @@ button {
   font: inherit;
 }
 
+.app-main {
+  flex: 1;
+  padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .app-shell {
   display: flex;
   min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.app-shell::before {
+  content: "";
+  position: fixed;
+  left: 58%;
+  top: 58%;
+  width: 900px;
+  height: 900px;
+  transform-style: preserve-3d;
+  background-image: url("../assets/neon-globe.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.5;
+  animation: neon-globe-spin 90s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+  filter:
+    drop-shadow(0 0 18px rgba(57, 255, 20, 0.35)) drop-shadow(0 0 60px rgba(57, 255, 20, 0.12));
+}
+
+.app-shell::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(57, 255, 20, 0.55) 1px, transparent 1px),
+    radial-gradient(circle, rgba(57, 255, 20, 0.35) 1px, transparent 1px);
+  background-size:
+    120px 120px,
+    180px 180px;
+  background-position:
+    20px 40px,
+    90px 120px;
+  opacity: 0.1;
+  animation: neon-stars-blink 3s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .app-sidebar {
@@ -166,8 +216,48 @@ button {
   display: flex;
   flex-direction: column;
 }
+
+.app-sidebar,
+.app-content-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
 .mobile-nav-toggle {
   display: none;
+}
+
+html {
+  scrollbar-width: none;
+}
+
+body {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes neon-globe-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes neon-stars-blink {
+  from {
+    opacity: 0.7;
+  }
+
+  to {
+    opacity: 0.14;
+  }
 }
 
 @media (max-width: 900px) {
@@ -179,7 +269,7 @@ button {
     display: none;
   }
 
-  .mobile-nav-toggle:checked ~ .app-sidebar {
+  .mobile-nav-toggle:checked~.app-sidebar {
     display: block;
     position: fixed;
     top: 0;
@@ -197,7 +287,7 @@ button {
     background: rgba(2, 6, 23, 0.72);
   }
 
-  .mobile-nav-toggle:checked ~ .mobile-sidebar-overlay {
+  .mobile-nav-toggle:checked~.mobile-sidebar-overlay {
     display: block;
   }
 
@@ -217,21 +307,21 @@ button {
     cursor: pointer;
   }
 
-.mobile-close-button {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid #223248;
-  border-radius: 10px;
-  background: transparent;
-  color: white;
-  cursor: pointer;
-  font-size: 22px;
-  line-height: 1;
-  position: relative;
-  top: -15px;
-}
+  .mobile-close-button {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid #223248;
+    border-radius: 10px;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    font-size: 22px;
+    line-height: 1;
+    position: relative;
+    top: -15px;
+  }
 
   .app-header {
     padding-left: 76px;
