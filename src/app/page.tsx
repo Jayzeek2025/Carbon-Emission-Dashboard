@@ -24,12 +24,6 @@ export default function Home() {
       {!loading && !error && (
   <>
     <SummaryCards companies={companies} />
-
-    <Card title="Dashboard Overview">
-      <p>Countries: {countries.length}</p>
-      <p>Companies: {companies.length}</p>
-      <p>Posts: {posts.length}</p>
-    </Card>
   </>
 )}
     </AppShell>
