@@ -17,7 +17,9 @@
 
 .chart-card__body {
    width: 100%;
+   min-width: 0;
    height: 200px;
+   min-height: 200px;
    padding: 20px 24px 24px;
 }
 
@@ -53,6 +55,7 @@
 
    .chart-card__body {
       height: 300px;
+      min-height: 300px;
       padding: 18px;
    }
 
