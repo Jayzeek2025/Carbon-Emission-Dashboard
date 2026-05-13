@@ -57,13 +57,15 @@ function getTrendData(values: number[]) {
 export default function CompanyEmissionsTable({
   companies,
 }: CompanyEmissionsTableProps) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const companiesPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
   const [sortKey, setSortKey] = useState<SortKey>("total");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   const handleSort = (key: SortKey) => {
     if (sortKey === key) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-
       return;
     }
 
@@ -71,8 +73,14 @@ export default function CompanyEmissionsTable({
     setSortDirection("asc");
   };
 
+  const filteredCompanies = useMemo(() => {
+    return companies.filter((company) =>
+      company.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+  }, [companies, searchTerm]);
+
   const sortedCompanies = useMemo(() => {
-    return [...companies].sort((a, b) => {
+    return [...filteredCompanies].sort((a, b) => {
       const direction = sortDirection === "asc" ? 1 : -1;
 
       if (sortKey === "company") {
@@ -98,7 +106,24 @@ export default function CompanyEmissionsTable({
 
       return aLatestMonth.localeCompare(bLatestMonth) * direction;
     });
-  }, [companies, sortKey, sortDirection]);
+  }, [filteredCompanies, sortKey, sortDirection]);
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(sortedCompanies.length / companiesPerPage),
+  );
+
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+
+  const startRow =
+    sortedCompanies.length === 0
+      ? 0
+      : (safeCurrentPage - 1) * companiesPerPage + 1;
+
+  const endRow = Math.min(
+    safeCurrentPage * companiesPerPage,
+    sortedCompanies.length,
+  );
 
   const getSortLabel = (key: SortKey) => {
     if (sortKey !== key) {
@@ -108,105 +133,142 @@ export default function CompanyEmissionsTable({
     return sortDirection === "asc" ? " ↑" : " ↓";
   };
 
-  if (companies.length === 0) {
-    return (
-      <section className="company-emissions-table-card">
-        <div className="company-emissions-table-empty">No companies found.</div>
-      </section>
-    );
-  }
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    setCurrentPage(1);
+  };
+
+  const paginatedCompanies = sortedCompanies.slice(
+    (safeCurrentPage - 1) * companiesPerPage,
+    safeCurrentPage * companiesPerPage,
+  );
 
   return (
     <section className="company-emissions-table-card">
       <div className="company-emissions-table-header">
-        <h2>Company Emissions</h2>
+        <div>
+          <h2>Company Emissions</h2>
+
+          <p>
+            Showing {startRow}-{endRow} of {sortedCompanies.length} companies
+          </p>
+        </div>
+
+        <div className="company-emissions-table-actions">
+          <input
+            className="company-emissions-search"
+            type="search"
+            placeholder="Search company..."
+            value={searchTerm}
+            onChange={(event) => handleSearchChange(event.target.value)}
+          />
+        </div>
       </div>
 
-      <div className="company-emissions-table-wrapper">
-        <table className="company-emissions-table">
-          <thead>
-            <tr>
-              <th>
-                <button
-                  className="company-emissions-sort-button"
-                  type="button"
-                  onClick={() => handleSort("company")}
-                >
-                  Company
-                  {getSortLabel("company")}
-                </button>
-              </th>
-
-              <th>Country</th>
-
-              <th>
-                <button
-                  className="company-emissions-sort-button"
-                  type="button"
-                  onClick={() => handleSort("total")}
-                >
-                  Total emissions
-                  {getSortLabel("total")}
-                </button>
-              </th>
-
-              <th>
-                <button
-                  className="company-emissions-sort-button"
-                  type="button"
-                  onClick={() => handleSort("latestMonth")}
-                >
-                  Latest month
-                  {getSortLabel("latestMonth")}
-                </button>
-              </th>
-
-              <th>Main source</th>
-
-              <th>Trend</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {sortedCompanies.map((company) => {
-              const totalEmissions = getCompanyTotalEmissions(company);
-
-              const sortedEmissions = [...company.emissions].sort((a, b) =>
-                a.yearMonth.localeCompare(b.yearMonth),
-              );
-
-              const latestEmission =
-                sortedEmissions[sortedEmissions.length - 1];
-
-              const trendData = getTrendData(
-                sortedEmissions.map((emission) => emission.emissions),
-              );
-
-              return (
-                <tr key={company.id}>
-                  <td>{company.name}</td>
-
-                  <td>{company.country}</td>
-
-                  <td>{totalEmissions.toLocaleString()} kg CO₂e</td>
-
-                  <td>{latestEmission?.yearMonth ?? "-"}</td>
-
-                  <td>{latestEmission?.source ?? "-"}</td>
-
-                  <td>
-                    <span
-                      className={`company-emissions-trend company-emissions-trend--${trendData.type}`}
+      {sortedCompanies.length === 0 ? (
+        <div className="company-emissions-table-empty">No companies found.</div>
+      ) : (
+        <>
+          <div className="company-emissions-table-wrapper">
+            <table className="company-emissions-table">
+              <thead>
+                <tr>
+                  <th>
+                    <button
+                      className="company-emissions-sort-button"
+                      type="button"
+                      onClick={() => handleSort("company")}
                     >
-                      {trendData.label}
-                    </span>
-                  </td>
+                      Company{getSortLabel("company")}
+                    </button>
+                  </th>
+
+                  <th>Country</th>
+
+                  <th>
+                    <button
+                      className="company-emissions-sort-button"
+                      type="button"
+                      onClick={() => handleSort("total")}
+                    >
+                      Total emissions{getSortLabel("total")}
+                    </button>
+                  </th>
+
+                  <th>
+                    <button
+                      className="company-emissions-sort-button"
+                      type="button"
+                      onClick={() => handleSort("latestMonth")}
+                    >
+                      Latest month{getSortLabel("latestMonth")}
+                    </button>
+                  </th>
+
+                  <th>Main source</th>
+                  <th>Trend</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+              </thead>
+
+              <tbody>
+                {paginatedCompanies.map((company) => {
+                  const totalEmissions = getCompanyTotalEmissions(company);
+
+                  const sortedEmissions = [...company.emissions].sort((a, b) =>
+                    a.yearMonth.localeCompare(b.yearMonth),
+                  );
+
+                  const latestEmission =
+                    sortedEmissions[sortedEmissions.length - 1];
+
+                  const trendData = getTrendData(
+                    sortedEmissions.map((emission) => emission.emissions),
+                  );
+
+                  return (
+                    <tr key={company.id}>
+                      <td>{company.name}</td>
+                      <td>{company.country}</td>
+                      <td>{totalEmissions.toLocaleString()} kg CO₂e</td>
+                      <td>{latestEmission?.yearMonth ?? "-"}</td>
+                      <td>{latestEmission?.source ?? "-"}</td>
+                      <td>
+                        <span
+                          className={`company-emissions-trend company-emissions-trend--${trendData.type}`}
+                        >
+                          {trendData.label}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="company-emissions-pagination">
+            <button
+              type="button"
+              disabled={safeCurrentPage === 1}
+              onClick={() => setCurrentPage(safeCurrentPage - 1)}
+            >
+              Previous
+            </button>
+
+            <span>
+              Page {safeCurrentPage} of {totalPages}
+            </span>
+
+            <button
+              type="button"
+              disabled={safeCurrentPage === totalPages}
+              onClick={() => setCurrentPage(safeCurrentPage + 1)}
+            >
+              Next
+            </button>
+          </div>
+        </>
+      )}
     </section>
   );
 }

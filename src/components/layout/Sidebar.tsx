@@ -6,9 +6,9 @@ import { usePathname } from "next/navigation";
 const menuItems = [
   { label: "Dashboard", path: "/" },
   { label: "Companies", path: "/companies" },
-  { label: "Reports", path: "/" },
-  { label: "Posts", path: "/" },
-  { label: "Settings", path: "/" },
+  { label: "Reports", path: "/reports" },
+  { label: "Posts", path: "/posts" },
+  { label: "Settings", path: "/settings" },
 ];
 
 export default function Sidebar() {
@@ -34,9 +34,7 @@ export default function Sidebar() {
             key={item.label}
             href={item.path}
             className={
-              pathname === item.path && item.label === "Dashboard"
-                ? "app-nav-item active"
-                : "app-nav-item"
+              pathname === item.path ? "app-nav-item active" : "app-nav-item"
             }
           >
             {item.label}
