@@ -1,0 +1,48 @@
+.error-state {
+  display: grid;
+  place-items: center;
+  gap: 18px;
+  min-height: 420px;
+  padding: 40px;
+  text-align: center;
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(127, 29, 29, 0.22), rgba(7, 20, 36, 0.9));
+}
+
+.error-state__icon {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(248, 113, 113, 0.16);
+  color: #fca5a5;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.error-state__title {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 24px;
+}
+
+.error-state__message {
+  margin: 8px 0 0;
+  color: #cbd5e1;
+}
+
+.error-state__button {
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  border-radius: 12px;
+  padding: 10px 18px;
+  background: rgba(16, 185, 129, 0.14);
+  color: #d1fae5;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.error-state__button:hover {
+  background: rgba(16, 185, 129, 0.22);
+}
