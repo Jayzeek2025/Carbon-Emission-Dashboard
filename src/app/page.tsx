@@ -3,6 +3,7 @@
 import { useState } from "react";
 import AppShell from "@/components/layout/AppShell";
 import SummaryCards from "@/components/dashboard/SummaryCards";
+import DashboardFilters from "@/components/dashboard/DashboardFilters";
 
 import ErrorState from "@/components/ui/ErrorState";
 import LoadingState from "@/components/ui/LoadingState";
@@ -14,9 +15,9 @@ import { useDashboardData } from "@/hooks/useDashboardData";
 export default function Home() {
   const { companies, loading, error, refetch } = useDashboardData();
   const [selectedCompany, setSelectedCompany] = useState("all");
-  const [selectedCountry, setSelectedCountry] = useState("all");
-  const [selectedMonth, setSelectedMonth] = useState("all");
-  const [selectedSource, setSelectedSource] = useState("all");
+  const [selectedCountry] = useState("all");
+  const [selectedMonth] = useState("all");
+  const [selectedSource] = useState("all");
 
   return (
     <AppShell>
@@ -26,21 +27,22 @@ export default function Home() {
 
       {!loading && !error && (
         <>
-          <div>
-            <p>Selected Company: {selectedCompany}</p>
-            <p>Selected Country: {selectedCountry}</p>
-            <p>Selected Month: {selectedMonth}</p>
-            <p>Selected Source: {selectedSource}</p>
+          <DashboardFilters
+            companies={companies}
+            selectedCompany={selectedCompany}
+            onCompanyChange={setSelectedCompany}
+          />
 
-            <button
-              type="button"
-              onClick={() => setSelectedCompany("test-company")}
-            >
-              Test Company Filter
-            </button>
-          </div>
+          <p>
+            Selected Company:{" "}
+            {companies.find((company) => company.id === selectedCompany)
+              ?.name ?? "All Companies"}
+          </p>
+          <p>Selected Country: {selectedCountry}</p>
+          <p>Selected Month: {selectedMonth}</p>
+          <p>Selected Source: {selectedSource}</p>
+
           <SummaryCards companies={companies} />
-
           <MonthlyEmissionsChart companies={companies} />
           <EmissionsBySourceChart companies={companies} />
         </>
