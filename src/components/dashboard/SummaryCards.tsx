@@ -3,6 +3,7 @@ import type { Company } from "@/types/emissions";
 import {
   getCompanyTotalEmissions,
   getHighestEmittingCompany,
+  getLowestEmittingCompany,
   getTotalEmissions,
 } from "@/utils/emissions";
 
@@ -15,6 +16,8 @@ type SummaryCardsProps = {
 export default function SummaryCards({ companies }: SummaryCardsProps) {
   const totalEmissions = getTotalEmissions(companies);
   const highestEmittingCompany = getHighestEmittingCompany(companies);
+  const lowestEmittingCompany =
+  getLowestEmittingCompany(companies);
 
   return (
     <div className="summary-cards">
@@ -45,6 +48,24 @@ export default function SummaryCards({ companies }: SummaryCardsProps) {
             : "No emissions data"}
         </div>
       </Card>
+
+      <Card className="summary-card">
+  <div className="summary-card__label">
+    Lowest Emitting Company
+  </div>
+
+  <div className="summary-card__value summary-card__value--company">
+    {lowestEmittingCompany?.name ?? "-"}
+  </div>
+
+  <div className="summary-card__unit">
+    {lowestEmittingCompany
+      ? `${getCompanyTotalEmissions(
+          lowestEmittingCompany,
+        ).toLocaleString()} tonnes CO2e`
+      : "No emissions data"}
+  </div>
+</Card>
     </div>
   );
 }
