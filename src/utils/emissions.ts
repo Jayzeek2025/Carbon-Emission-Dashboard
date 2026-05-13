@@ -144,16 +144,14 @@ export function getLargestMonthIncrease(companies: Company[]) {
     increase: number;
   } | null = null;
 
-  companies.forEach((company) => {
+  for (const company of companies) {
     const sortedEmissions = [...company.emissions].sort((a, b) =>
       a.yearMonth.localeCompare(b.yearMonth),
     );
 
     for (let index = 1; index < sortedEmissions.length; index++) {
       const previous = sortedEmissions[index - 1].emissions;
-
       const current = sortedEmissions[index].emissions;
-
       const increase = current - previous;
 
       if (increase > largestIncrease) {
@@ -165,7 +163,7 @@ export function getLargestMonthIncrease(companies: Company[]) {
         };
       }
     }
-  });
+  }
 
   return result;
 }

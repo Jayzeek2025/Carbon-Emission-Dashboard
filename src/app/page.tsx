@@ -9,6 +9,7 @@ import LoadingState from "@/components/ui/LoadingState";
 import MonthlyEmissionsChart from "@/components/dashboard/MonthlyEmissionsChart";
 import EmissionsBySourceChart from "@/components/dashboard/EmissionsBySourceChart";
 import DashboardOverview from "@/components/dashboard/DashboardOverview";
+import InsightsPanel from "@/components/dashboard/InsightsPanel";
 import { useDashboardData } from "@/hooks/useDashboardData";
 
 export default function Home() {
@@ -124,6 +125,7 @@ export default function Home() {
           <SummaryCards companies={filteredCompanies} />
           <MonthlyEmissionsChart companies={filteredCompanies} />
           <EmissionsBySourceChart companies={filteredCompanies} />
+          <InsightsPanel companies={filteredCompanies} />
         </>
       )}
     </AppShell>
