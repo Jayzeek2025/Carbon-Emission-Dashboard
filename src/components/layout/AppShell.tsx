@@ -3,9 +3,10 @@ import Sidebar from "@/components/layout/Sidebar";
 
 type AppShellProps = {
   children: React.ReactNode;
+  headerContent?: React.ReactNode;
 };
 
-export default function AppShell({ children }: AppShellProps) {
+export default function AppShell({ children, headerContent }: AppShellProps) {
   return (
     <div className="app-shell">
       <input
@@ -31,7 +32,7 @@ export default function AppShell({ children }: AppShellProps) {
       <Sidebar />
 
       <div className="app-content-wrapper">
-        <Header />
+        <Header headerContent={headerContent} />
 
         <main className="app-main">{children}</main>
       </div>

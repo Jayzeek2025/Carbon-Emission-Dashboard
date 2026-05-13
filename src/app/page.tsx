@@ -4,16 +4,16 @@ import { useState } from "react";
 import AppShell from "@/components/layout/AppShell";
 import SummaryCards from "@/components/dashboard/SummaryCards";
 import DashboardFilters from "@/components/dashboard/DashboardFilters";
-
 import ErrorState from "@/components/ui/ErrorState";
 import LoadingState from "@/components/ui/LoadingState";
 import MonthlyEmissionsChart from "@/components/dashboard/MonthlyEmissionsChart";
 import EmissionsBySourceChart from "@/components/dashboard/EmissionsBySourceChart";
-
+import DashboardOverview from "@/components/dashboard/DashboardOverview";
 import { useDashboardData } from "@/hooks/useDashboardData";
 
 export default function Home() {
   const { countries, companies, loading, error, refetch } = useDashboardData();
+
   const [selectedCompany, setSelectedCompany] = useState("all");
   const [selectedCountry, setSelectedCountry] = useState("all");
   const [selectedMonth, setSelectedMonth] = useState("all");
@@ -44,53 +44,45 @@ export default function Home() {
     }
   };
 
+  const handleClearFilters = () => {
+    setSelectedCompany("all");
+    setSelectedCountry("all");
+    setSelectedMonth("all");
+    setSelectedSource("all");
+  };
+
+  const hasActiveFilters =
+    selectedCompany !== "all" ||
+    selectedCountry !== "all" ||
+    selectedMonth !== "all" ||
+    selectedSource !== "all";
+
   const filteredCompanies = companies
-    .filter((company) => {
-      if (selectedCompany === "all") {
-        return true;
-      }
-
-      return company.id === selectedCompany;
-    })
-    .filter((company) => {
-      if (selectedCountry === "all") {
-        return true;
-      }
-
-      return company.country === selectedCountry;
-    })
-    .map((company) => {
-      const filteredEmissions = company.emissions
-        .filter((emission) => {
-          if (selectedMonth === "all") {
-            return true;
-          }
-
-          return emission.yearMonth === selectedMonth;
-        })
-        .filter((emission) => {
-          if (selectedSource === "all") {
-            return true;
-          }
-
-          return emission.source === selectedSource;
-        });
-
-      return {
-        ...company,
-        emissions: filteredEmissions,
-      };
-    })
+    .filter(
+      (company) => selectedCompany === "all" || company.id === selectedCompany,
+    )
+    .filter(
+      (company) =>
+        selectedCountry === "all" || company.country === selectedCountry,
+    )
+    .map((company) => ({
+      ...company,
+      emissions: company.emissions
+        .filter(
+          (emission) =>
+            selectedMonth === "all" || emission.yearMonth === selectedMonth,
+        )
+        .filter(
+          (emission) =>
+            selectedSource === "all" || emission.source === selectedSource,
+        ),
+    }))
     .filter((company) => company.emissions.length > 0);
 
   return (
-    <AppShell>
-      {loading && <LoadingState />}
-
-      {error && !loading && <ErrorState message={error} onRetry={refetch} />}
-
-      {!loading && !error && (
-        <>
+    <AppShell
+      headerContent={
+        !loading && !error ? (
           <DashboardFilters
             companies={companies}
             countries={countries}
@@ -104,17 +96,31 @@ export default function Home() {
             onCountryChange={setSelectedCountry}
             onMonthChange={setSelectedMonth}
             onSourceChange={setSelectedSource}
+            onClearFilters={handleClearFilters}
+            hasActiveFilters={hasActiveFilters}
           />
+        ) : null
+      }
+    >
+      {loading && <LoadingState />}
 
-          <p>
-            Selected Company:{" "}
-            {companies.find((company) => company.id === selectedCompany)
-              ?.name ?? "All Companies"}
-          </p>
-          <p>Selected Country: {selectedCountry}</p>
-          <p>Selected Month: {selectedMonth}</p>
-          <p>Selected Source: {selectedSource}</p>
+      {error && !loading && <ErrorState message={error} onRetry={refetch} />}
 
+      {!loading && !error && (
+        <>
+          <DashboardOverview
+            selectedCompany={
+              companies.find((company) => company.id === selectedCompany)
+                ?.name ?? "All Companies"
+            }
+            selectedCountry={
+              countries.find((country) => country.code === selectedCountry)
+                ?.name ?? "All Countries"
+            }
+            selectedMonth={selectedMonth}
+            selectedSource={selectedSource}
+            totalCompanies={filteredCompanies.length}
+          />
           <SummaryCards companies={filteredCompanies} />
           <MonthlyEmissionsChart companies={filteredCompanies} />
           <EmissionsBySourceChart companies={filteredCompanies} />

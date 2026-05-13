@@ -1,3 +1,5 @@
+import "./DashboardFilters.css";
+
 type DashboardFiltersProps = {
   companies: {
     id: string;
@@ -21,6 +23,8 @@ type DashboardFiltersProps = {
   onCountryChange: (value: string) => void;
   onMonthChange: (value: string) => void;
   onSourceChange: (value: string) => void;
+  onClearFilters: () => void;
+  hasActiveFilters: boolean;
 };
 
 export default function DashboardFilters({
@@ -36,6 +40,8 @@ export default function DashboardFilters({
   onCountryChange,
   onMonthChange,
   onSourceChange,
+  onClearFilters,
+  hasActiveFilters,
 }: DashboardFiltersProps) {
   return (
     <div className="dashboard-filters">
@@ -44,7 +50,6 @@ export default function DashboardFilters({
         onChange={(event) => onCompanyChange(event.target.value)}
       >
         <option value="all">All Companies</option>
-
         {companies.map((company) => (
           <option key={company.id} value={company.id}>
             {company.name}
@@ -57,7 +62,6 @@ export default function DashboardFilters({
         onChange={(event) => onCountryChange(event.target.value)}
       >
         <option value="all">All Countries</option>
-
         {countries.map((country) => (
           <option key={country.code} value={country.code}>
             {country.name}
@@ -70,7 +74,6 @@ export default function DashboardFilters({
         onChange={(event) => onMonthChange(event.target.value)}
       >
         <option value="all">All Months</option>
-
         {months.map((month) => (
           <option key={month} value={month}>
             {month}
@@ -83,13 +86,21 @@ export default function DashboardFilters({
         onChange={(event) => onSourceChange(event.target.value)}
       >
         <option value="all">All Sources</option>
-
         {sources.map((source) => (
           <option key={source} value={source}>
             {source}
           </option>
         ))}
       </select>
+
+      <button
+        type="button"
+        onClick={onClearFilters}
+        disabled={!hasActiveFilters}
+        className="dashboard-filters__clear"
+      >
+        Clear Filters
+      </button>
     </div>
   );
 }

@@ -29,3 +29,16 @@
   color: #39ff14;
   font-size: 14px;
 }
+
+.summary-card__meta {
+  margin-top: 14px;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.summary-card--primary {
+  border-color: rgba(57, 255, 20, 0.42);
+  box-shadow:
+    0 0 12px rgba(57, 255, 20, 0.18),
+    0 0 32px rgba(57, 255, 20, 0.08);
+}
