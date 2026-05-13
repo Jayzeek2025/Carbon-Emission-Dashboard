@@ -4,15 +4,11 @@ import AppShell from "@/components/layout/AppShell";
 import ErrorState from "@/components/ui/ErrorState";
 import LoadingState from "@/components/ui/LoadingState";
 import { useDashboardData } from "@/hooks/useDashboardData";
-import { getTotalEmissions } from "@/utils/emission";
+import { getCountryName } from "@/utils/emission";
 
 export default function Home() {
   const { countries, companies, posts, loading, error, refetch } =
     useDashboardData();
-
-    if (!loading && !error) {
-    console.log("Total emissions:", getTotalEmissions(companies));
-  }
 
   return (
     <AppShell>
@@ -28,6 +24,10 @@ export default function Home() {
           <p>Countries: {countries.length}</p>
           <p>Companies: {companies.length}</p>
           <p>Posts: {posts.length}</p>
+          <p>
+  First Company Country:{" "}
+  {companies[0] ? getCountryName(companies[0].country, countries) : "-"}
+</p>
         </div>
       )}
     </AppShell>

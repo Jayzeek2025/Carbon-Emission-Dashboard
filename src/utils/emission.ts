@@ -1,4 +1,8 @@
-import type { Company, GhgEmission } from "@/types/emissions";
+import type {
+  Company,
+  Country,
+  GhgEmission,
+} from "@/types/emissions";
 
 export function getTotalEmissions(companies: Company[]) {
   return companies.reduce((companyTotal, company) => {
@@ -47,7 +51,8 @@ export function getMonthlyTotals(emissions: GhgEmission[]) {
   const monthlyTotals: Record<string, number> = {};
 
   emissions.forEach((emission) => {
-    const existingValue = monthlyTotals[emission.yearMonth] ?? 0;
+    const existingValue =
+      monthlyTotals[emission.yearMonth] ?? 0;
 
     monthlyTotals[emission.yearMonth] =
       existingValue + emission.emissions;
@@ -56,11 +61,14 @@ export function getMonthlyTotals(emissions: GhgEmission[]) {
   return monthlyTotals;
 }
 
-export function getEmissionsBySource(emissions: GhgEmission[]) {
+export function getEmissionsBySource(
+  emissions: GhgEmission[],
+) {
   const sourceTotals: Record<string, number> = {};
 
   emissions.forEach((emission) => {
-    const existingValue = sourceTotals[emission.source] ?? 0;
+    const existingValue =
+      sourceTotals[emission.source] ?? 0;
 
     sourceTotals[emission.source] =
       existingValue + emission.emissions;
@@ -78,7 +86,19 @@ export function getMonthlyChangePercentage(
   }
 
   return (
-    ((currentMonth - previousMonth) / previousMonth) *
+    ((currentMonth - previousMonth) /
+      previousMonth) *
     100
   );
+}
+
+export function getCountryName(
+  code: string,
+  countries: Country[],
+) {
+  const country = countries.find(
+    (country) => country.code === code,
+  );
+
+  return country?.name ?? code;
 }
