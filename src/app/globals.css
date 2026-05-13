@@ -5,6 +5,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   background: #07111f;
   color: white;
+  scrollbar-width: none;
 }
 
 * {
@@ -15,20 +16,11 @@ button {
   font: inherit;
 }
 
-.app-main {
-  flex: 1;
-  padding: 24px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
 .app-shell {
   display: flex;
   min-height: 100vh;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .app-shell::before {
@@ -71,10 +63,16 @@ button {
 }
 
 .app-sidebar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  align-self: flex-start;
   width: 240px;
+  height: 100vh;
   background: #0b1728;
   border-right: 1px solid #1f2c3d;
   padding: 24px;
+  overflow-y: auto;
 }
 
 .app-sidebar h2 {
@@ -89,28 +87,14 @@ button {
   gap: 16px;
 }
 
-.mobile-menu-button,
-.mobile-close-button {
-  display: none;
-}
-
 .app-nav {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.app-nav button {
-  background: transparent;
-  border: 1px solid #223248;
-  color: white;
-  padding: 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  text-align: left;
-}
-
 .app-nav-item {
+  display: block;
   background: transparent;
   border: 1px solid #223248;
   color: white;
@@ -118,6 +102,7 @@ button {
   border-radius: 10px;
   cursor: pointer;
   text-align: left;
+  text-decoration: none;
   transition: all 0.2s ease;
 }
 
@@ -139,6 +124,17 @@ button {
     0 0 18px rgba(57, 255, 20, 0.22),
     inset 0 0 10px rgba(57, 255, 20, 0.06);
   transition: all 0.2s ease;
+}
+
+.app-content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content-wrapper {
+  position: relative;
+  z-index: 1;
 }
 
 .app-header {
@@ -209,30 +205,18 @@ button {
 .app-main {
   flex: 1;
   padding: 24px;
-}
-
-.app-content-wrapper {
-  flex: 1;
   display: flex;
   flex-direction: column;
-}
-
-.app-sidebar,
-.app-content-wrapper {
-  position: relative;
-  z-index: 1;
+  gap: 24px;
 }
 
 .mobile-nav-toggle {
   display: none;
 }
 
-html {
-  scrollbar-width: none;
-}
-
-body {
-  scrollbar-width: none;
+.mobile-menu-button,
+.mobile-close-button {
+  display: none;
 }
 
 html::-webkit-scrollbar,

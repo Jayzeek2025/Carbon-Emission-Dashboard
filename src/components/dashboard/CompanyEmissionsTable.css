@@ -1,0 +1,127 @@
+.company-emissions-table-card {
+   width: 100%;
+   border-radius: 24px;
+   padding: 24px;
+   background:
+      linear-gradient(180deg,
+         rgba(6, 18, 34, 0.96),
+         rgba(3, 10, 24, 0.96));
+   border: 1px solid rgba(57, 255, 20, 0.35);
+   box-shadow:
+      0 0 10px rgba(57, 255, 20, 0.16),
+      0 0 28px rgba(57, 255, 20, 0.08),
+      inset 0 0 24px rgba(57, 255, 20, 0.03);
+   backdrop-filter: blur(12px);
+}
+
+.company-emissions-table-header {
+   margin-bottom: 20px;
+}
+
+.company-emissions-table-header h2 {
+   margin: 0;
+   color: #f8fafc;
+   font-size: 24px;
+   font-weight: 700;
+   letter-spacing: -0.02em;
+}
+
+.company-emissions-table-wrapper {
+   width: 100%;
+   overflow-x: auto;
+}
+
+.company-emissions-table-wrapper::-webkit-scrollbar {
+   height: 8px;
+}
+
+.company-emissions-table-wrapper::-webkit-scrollbar-thumb {
+   background: rgba(57, 255, 20, 0.3);
+   border-radius: 999px;
+}
+
+.company-emissions-table {
+   width: 100%;
+   min-width: 780px;
+   border-collapse: collapse;
+}
+
+.company-emissions-table th,
+.company-emissions-table td {
+   padding: 16px;
+   text-align: left;
+   border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+   white-space: nowrap;
+}
+
+.company-emissions-table th {
+   color: #94a3b8;
+   font-size: 13px;
+   font-weight: 700;
+   background: rgba(15, 23, 42, 0.55);
+   text-transform: uppercase;
+   letter-spacing: 0.04em;
+}
+
+.company-emissions-table td {
+   color: #e2e8f0;
+   font-size: 14px;
+}
+
+.company-emissions-table tbody tr {
+   transition: all 0.2s ease;
+}
+
+.company-emissions-table tbody tr:hover {
+   background: rgba(57, 255, 20, 0.08);
+   box-shadow:
+      inset 0 0 0 1px rgba(57, 255, 20, 0.18),
+      0 0 12px rgba(57, 255, 20, 0.12),
+      0 0 28px rgba(57, 255, 20, 0.06);
+}
+
+.company-emissions-trend {
+   display: inline-flex;
+   align-items: center;
+   font-weight: 700;
+}
+
+.company-emissions-trend--up {
+   color: #39ff14;
+}
+
+.company-emissions-trend--down {
+   color: #ff4d4f;
+}
+
+.company-emissions-trend--stable {
+   color: #94a3b8;
+}
+
+.company-emissions-table-card {
+   transition: all 0.2s ease;
+}
+
+.company-emissions-table-card:hover {
+   border-color: #39ff14;
+   box-shadow:
+      0 0 8px rgba(57, 255, 20, 0.35),
+      0 0 18px rgba(57, 255, 20, 0.22),
+      inset 0 0 10px rgba(57, 255, 20, 0.06);
+}
+
+@media (max-width: 768px) {
+   .company-emissions-table-card {
+      padding: 18px;
+      border-radius: 20px;
+   }
+
+   .company-emissions-table-header h2 {
+      font-size: 20px;
+   }
+
+   .company-emissions-table th,
+   .company-emissions-table td {
+      padding: 14px;
+   }
+}

@@ -57,23 +57,28 @@ export default function MonthlyEmissionsChart({
                   y2="1"
                 >
                   <stop offset="0%" stopColor="#39ff14" stopOpacity={0.4} />
-
                   <stop offset="100%" stopColor="#39ff14" stopOpacity={0} />
                 </linearGradient>
               </defs>
 
               <CartesianGrid stroke="rgba(255,255,255,0.06)" vertical={false} />
-
               <XAxis dataKey="month" stroke="#94a3b8" />
-
               <YAxis stroke="#94a3b8" />
 
               <Tooltip
+                formatter={(value) => [
+                  `${Number(value).toLocaleString()} kg CO₂e`,
+                  "Total emissions",
+                ]}
+                labelFormatter={(label) => `Month: ${label}`}
                 contentStyle={{
                   background: "#07111f",
                   border: "1px solid #39ff14",
                   borderRadius: "12px",
                   color: "white",
+                }}
+                labelStyle={{
+                  color: "#ffffff",
                 }}
               />
 

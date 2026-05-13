@@ -49,17 +49,23 @@ export default function EmissionsBySourceChart({
           <ResponsiveContainer>
             <BarChart data={chartData}>
               <CartesianGrid stroke="rgba(255,255,255,0.06)" vertical={false} />
-
               <XAxis dataKey="source" stroke="#94a3b8" />
-
               <YAxis stroke="#94a3b8" />
 
               <Tooltip
+                formatter={(value) => [
+                  `${Number(value).toLocaleString()} kg CO₂e`,
+                  "Total emissions",
+                ]}
+                labelFormatter={(label) => `Source: ${label}`}
                 contentStyle={{
                   background: "#07111f",
                   border: "1px solid #39ff14",
                   borderRadius: "12px",
                   color: "white",
+                }}
+                labelStyle={{
+                  color: "#ffffff",
                 }}
               />
 

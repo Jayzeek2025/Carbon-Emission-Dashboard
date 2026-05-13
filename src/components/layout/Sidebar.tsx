@@ -1,6 +1,19 @@
-const menuItems = ["Dashboard", "Companies", "Reports", "Posts", "Settings"];
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const menuItems = [
+  { label: "Dashboard", path: "/" },
+  { label: "Companies", path: "/companies" },
+  { label: "Reports", path: "/" },
+  { label: "Posts", path: "/" },
+  { label: "Settings", path: "/" },
+];
 
 export default function Sidebar() {
+  const pathname = usePathname();
+
   return (
     <aside className="app-sidebar">
       <div className="app-sidebar-header">
@@ -17,15 +30,17 @@ export default function Sidebar() {
 
       <nav className="app-nav">
         {menuItems.map((item) => (
-          <button
-            key={item}
+          <Link
+            key={item.label}
+            href={item.path}
             className={
-              item === "Dashboard" ? "app-nav-item active" : "app-nav-item"
+              pathname === item.path && item.label === "Dashboard"
+                ? "app-nav-item active"
+                : "app-nav-item"
             }
-            type="button"
           >
-            {item}
-          </button>
+            {item.label}
+          </Link>
         ))}
       </nav>
     </aside>
