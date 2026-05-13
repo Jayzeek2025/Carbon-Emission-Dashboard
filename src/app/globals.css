@@ -79,11 +79,59 @@ button {
 }
 
 .app-header {
-  height: 80px;
+  min-height: 88px;
   border-bottom: 1px solid #1f2c3d;
   display: flex;
   align-items: center;
-  padding: 0 24px;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 24px;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.app-header p {
+  margin: 6px 0 0;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.app-user-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 180px;
+  padding: 10px 14px;
+  border: 1px solid #223248;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.75);
+}
+
+.app-user-avatar {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0f766e, #22c55e);
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.app-user-badge strong {
+  display: block;
+  font-size: 14px;
+}
+
+.app-user-badge span:not(.app-user-avatar) {
+  display: block;
+  color: #94a3b8;
+  font-size: 12px;
 }
 
 .app-main {

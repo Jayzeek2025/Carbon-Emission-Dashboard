@@ -1,3 +1,4 @@
+import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
 
 type AppShellProps = {
@@ -10,9 +11,7 @@ export default function AppShell({ children }: AppShellProps) {
       <Sidebar />
 
       <div className="app-content-wrapper">
-        <header className="app-header">
-          <h1>Carbon Emissions Dashboard</h1>
-        </header>
+        <Header />
 
         <main className="app-main">{children}</main>
       </div>
