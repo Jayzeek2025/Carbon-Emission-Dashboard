@@ -4,10 +4,15 @@ import AppShell from "@/components/layout/AppShell";
 import ErrorState from "@/components/ui/ErrorState";
 import LoadingState from "@/components/ui/LoadingState";
 import { useDashboardData } from "@/hooks/useDashboardData";
+import { getTotalEmissions } from "@/utils/emission";
 
 export default function Home() {
   const { countries, companies, posts, loading, error, refetch } =
     useDashboardData();
+
+    if (!loading && !error) {
+    console.log("Total emissions:", getTotalEmissions(companies));
+  }
 
   return (
     <AppShell>
