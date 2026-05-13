@@ -29,6 +29,60 @@ export default function Home() {
     new Set(allEmissions.map((emission) => emission.source)),
   ).sort();
 
+  const handleCompanyChange = (value: string) => {
+    setSelectedCompany(value);
+
+    if (value === "all") {
+      setSelectedCountry("all");
+      return;
+    }
+
+    const selected = companies.find((company) => company.id === value);
+
+    if (selected) {
+      setSelectedCountry(selected.country);
+    }
+  };
+
+  const filteredCompanies = companies
+    .filter((company) => {
+      if (selectedCompany === "all") {
+        return true;
+      }
+
+      return company.id === selectedCompany;
+    })
+    .filter((company) => {
+      if (selectedCountry === "all") {
+        return true;
+      }
+
+      return company.country === selectedCountry;
+    })
+    .map((company) => {
+      const filteredEmissions = company.emissions
+        .filter((emission) => {
+          if (selectedMonth === "all") {
+            return true;
+          }
+
+          return emission.yearMonth === selectedMonth;
+        })
+        .filter((emission) => {
+          if (selectedSource === "all") {
+            return true;
+          }
+
+          return emission.source === selectedSource;
+        });
+
+      return {
+        ...company,
+        emissions: filteredEmissions,
+      };
+    })
+    .filter((company) => company.emissions.length > 0);
+
   return (
     <AppShell>
       {loading && <LoadingState />}
@@ -46,7 +100,7 @@ export default function Home() {
             selectedCountry={selectedCountry}
             selectedMonth={selectedMonth}
             selectedSource={selectedSource}
-            onCompanyChange={setSelectedCompany}
+            onCompanyChange={handleCompanyChange}
             onCountryChange={setSelectedCountry}
             onMonthChange={setSelectedMonth}
             onSourceChange={setSelectedSource}
@@ -61,9 +115,9 @@ export default function Home() {
           <p>Selected Month: {selectedMonth}</p>
           <p>Selected Source: {selectedSource}</p>
 
-          <SummaryCards companies={companies} />
-          <MonthlyEmissionsChart companies={companies} />
-          <EmissionsBySourceChart companies={companies} />
+          <SummaryCards companies={filteredCompanies} />
+          <MonthlyEmissionsChart companies={filteredCompanies} />
+          <EmissionsBySourceChart companies={filteredCompanies} />
         </>
       )}
     </AppShell>
