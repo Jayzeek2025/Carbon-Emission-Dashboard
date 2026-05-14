@@ -1,15 +1,13 @@
 "use client";
 
-import Link from "next/link";
-
 import AppShell from "@/components/layout/AppShell";
-import PostsPanel from "@/components/posts/PostsPanel";
+import PostForm from "@/components/posts/PostForm";
 import ErrorState from "@/components/ui/ErrorState";
 import LoadingState from "@/components/ui/LoadingState";
 import { useDashboardData } from "@/hooks/useDashboardData";
 
-export default function PostsPage() {
-  const { companies, posts, loading, error, refetch } = useDashboardData();
+export default function CreatePostPage() {
+  const { companies, loading, error, refetch } = useDashboardData();
 
   if (loading) {
     return (
@@ -33,20 +31,8 @@ export default function PostsPage() {
 
   return (
     <AppShell>
-      <div className="posts-header-actions">
-        <Link className="create-post-button" href="/posts/create">
-          Create Post
-        </Link>
-      </div>
-
       <main className="page-content">
-        <div className="posts-page-header">
-          <h2>Sustainability Posts</h2>
-
-          <p>Latest company sustainability updates.</p>
-        </div>
-
-        <PostsPanel posts={posts} companies={companies} />
+        <PostForm companies={companies} />
       </main>
     </AppShell>
   );

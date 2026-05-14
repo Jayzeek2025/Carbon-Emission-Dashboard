@@ -36,7 +36,13 @@ export default function Sidebar() {
               key={item.label}
               href={item.path}
               className={
-                pathname === item.path ? "app-nav-item active" : "app-nav-item"
+                item.path === "/"
+                  ? pathname === item.path
+                    ? "app-nav-item active"
+                    : "app-nav-item"
+                  : pathname.startsWith(item.path)
+                    ? "app-nav-item active"
+                    : "app-nav-item"
               }
             >
               {item.label}

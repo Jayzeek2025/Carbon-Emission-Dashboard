@@ -31,10 +31,6 @@ export default function PostsPanel({ posts, companies }: PostsPanelProps) {
 
   return (
     <section className="posts-panel">
-      <div className="posts-panel-header">
-        <h2>Sustainability Posts</h2>
-        <p>Latest company sustainability updates.</p>
-      </div>
 
       <div className="posts-list">
         {posts.map((post) => (
