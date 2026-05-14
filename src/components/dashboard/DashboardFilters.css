@@ -1,12 +1,16 @@
 .dashboard-filters {
    display: flex;
    align-items: center;
+   justify-content: center;
+   flex-wrap: wrap;
    gap: 10px;
+   width: 100%;
 }
 
 .dashboard-filters select,
 .dashboard-filters__clear {
    height: 36px;
+   min-width: 140px;
    border: 1px solid rgba(57, 255, 20, 0.22);
    border-radius: 10px;
    background: rgba(5, 14, 26, 0.9);
@@ -38,9 +42,22 @@
    cursor: not-allowed;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1024px) {
+
+   .dashboard-filters select,
+   .dashboard-filters__clear {
+      flex: 1 1 160px;
+   }
+}
+
+@media (max-width: 640px) {
    .dashboard-filters {
-      flex-wrap: wrap;
-      justify-content: center;
+      gap: 8px;
+   }
+
+   .dashboard-filters select,
+   .dashboard-filters__clear {
+      flex: 1 1 100%;
+      width: 100%;
    }
 }

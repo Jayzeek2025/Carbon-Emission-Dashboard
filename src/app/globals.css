@@ -39,6 +39,9 @@ button {
   animation: neon-globe-spin 90s linear infinite;
   pointer-events: none;
   z-index: 0;
+  transition:
+    filter 1.8s ease-in-out,
+    opacity 1.8s ease-in-out;
   filter:
     drop-shadow(0 0 18px rgba(57, 255, 20, 0.35)) drop-shadow(0 0 60px rgba(57, 255, 20, 0.12));
 }
@@ -68,10 +71,12 @@ button {
   z-index: 1;
   align-self: flex-start;
   display: flex;
+  flex: 0 0 240px;
   flex-direction: column;
   justify-content: flex-start;
   gap: 24px;
   width: 240px;
+  min-width: 240px;
   height: 100vh;
   background: #0b1728;
   border-right: 1px solid #1f2c3d;
@@ -145,22 +150,34 @@ button {
   min-height: 88px;
   border-bottom: 1px solid #1f2c3d;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
+  flex-direction: column;
+  gap: 18px;
   padding: 18px 24px;
 }
 
-.app-header h1 {
+.app-header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.app-header-left h1 {
   margin: 0;
   font-size: 28px;
   line-height: 1.2;
 }
 
-.app-header p {
+.app-header-left p {
   margin: 6px 0 0;
   color: #94a3b8;
   font-size: 14px;
+}
+
+.app-header-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .app-user-badge {
@@ -228,6 +245,21 @@ body::-webkit-scrollbar {
   display: none;
 }
 
+.app-shell--green::before {
+  filter:
+    saturate(1) brightness(1) sepia(0) hue-rotate(0deg) saturate(1) drop-shadow(0 0 8px rgba(57, 255, 20, 0.28)) drop-shadow(0 0 18px rgba(57, 255, 20, 0.18)) drop-shadow(0 0 60px rgba(57, 255, 20, 0.08));
+}
+
+.app-shell--orange::before {
+  filter:
+    saturate(0) brightness(0.82) sepia(1) hue-rotate(-18deg) saturate(7) drop-shadow(0 0 8px rgba(255, 166, 0, 0.32)) drop-shadow(0 0 18px rgba(255, 140, 0, 0.22)) drop-shadow(0 0 60px rgba(255, 140, 0, 0.12));
+}
+
+.app-shell--red::before {
+  filter:
+    saturate(0) brightness(0.7) sepia(1) hue-rotate(-50deg) saturate(8) drop-shadow(0 0 8px rgba(255, 70, 70, 0.34)) drop-shadow(0 0 18px rgba(255, 40, 40, 0.24)) drop-shadow(0 0 60px rgba(255, 0, 0, 0.12));
+}
+
 @keyframes neon-globe-spin {
   from {
     transform: translate(-50%, -50%) rotate(0deg);
@@ -248,9 +280,21 @@ body::-webkit-scrollbar {
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1280px) {
   .app-shell {
     display: block;
+  }
+
+  .app-shell::before {
+    left: 50%;
+    top: 58%;
+    width: 620px;
+    height: 620px;
+    opacity: 0.38;
+  }
+
+  .app-shell::after {
+    opacity: 0.08;
   }
 
   .app-sidebar {
@@ -258,11 +302,11 @@ body::-webkit-scrollbar {
   }
 
   .mobile-nav-toggle:checked~.app-sidebar {
-    display: block;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 100;
+    display: flex;
     width: 260px;
     height: 100vh;
   }
@@ -296,6 +340,8 @@ body::-webkit-scrollbar {
   }
 
   .mobile-close-button {
+    position: relative;
+    top: -15px;
     display: grid;
     place-items: center;
     width: 34px;
@@ -307,11 +353,37 @@ body::-webkit-scrollbar {
     cursor: pointer;
     font-size: 22px;
     line-height: 1;
-    position: relative;
-    top: -15px;
   }
 
   .app-header {
-    padding-left: 76px;
+    padding: 18px 18px 18px 76px;
+  }
+
+  .app-header-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .app-header-left h1 {
+    font-size: 22px;
+  }
+
+  .app-header-left p {
+    font-size: 13px;
+  }
+
+  .app-header-filters {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .app-user-badge {
+    display: none;
+  }
+
+  .app-main {
+    padding: 18px;
+    gap: 18px;
   }
 }

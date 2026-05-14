@@ -10,6 +10,8 @@ import MonthlyEmissionsChart from "@/components/dashboard/MonthlyEmissionsChart"
 import EmissionsBySourceChart from "@/components/dashboard/EmissionsBySourceChart";
 import DashboardOverview from "@/components/dashboard/DashboardOverview";
 import { useDashboardData } from "@/hooks/useDashboardData";
+import { getEmissionTheme } from "@/utils/emissionTheme";
+import { getTotalEmissions } from "@/utils/emissions";
 
 export default function Home() {
   const { countries, companies, loading, error, refetch } = useDashboardData();
@@ -88,8 +90,13 @@ export default function Home() {
     }))
     .filter((company) => company.emissions.length > 0);
 
+  const totalEmissions = getTotalEmissions(filteredCompanies);
+
+  const emissionTheme = getEmissionTheme(totalEmissions);
+
   return (
     <AppShell
+      emissionTheme={emissionTheme}
       headerContent={
         !loading && !error ? (
           <DashboardFilters
