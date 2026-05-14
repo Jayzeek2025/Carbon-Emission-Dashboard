@@ -1,0 +1,110 @@
+.delete-post-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  background: rgba(2, 6, 23, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.delete-post-modal {
+  position: relative;
+  width: min(460px, calc(100% - 32px));
+  padding: 34px;
+  overflow: hidden;
+  border: 1px solid rgba(34, 197, 94, 0.28);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at center, rgba(34, 197, 94, 0.14), transparent 48%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(8, 13, 28, 0.96));
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.55),
+    0 0 40px rgba(34, 197, 94, 0.16);
+}
+
+.delete-post-modal-globe {
+  position: absolute;
+  right: -90px;
+  bottom: -120px;
+  width: 320px;
+  height: 320px;
+  background-image: url("../../assets/neon-globe.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.38;
+  pointer-events: none;
+  filter:
+    drop-shadow(0 0 18px rgba(57, 255, 20, 0.35))
+    drop-shadow(0 0 60px rgba(57, 255, 20, 0.12));
+  animation: delete-post-modal-globe-spin 28s linear infinite;
+}
+
+.delete-post-modal-content {
+  position: relative;
+  z-index: 1;
+}
+
+.delete-post-modal-label {
+  margin: 0 0 10px;
+  color: #86efac;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.delete-post-modal h3 {
+  margin: 0 0 12px;
+  color: #f8fafc;
+  font-size: 26px;
+}
+
+.delete-post-modal p {
+  margin: 0;
+  color: #cbd5e1;
+  line-height: 1.7;
+}
+
+.delete-post-modal strong {
+  color: #ffffff;
+}
+
+.delete-post-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.delete-post-modal-actions button {
+  min-width: 100px;
+  height: 42px;
+  border-radius: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.delete-post-modal-actions button:first-child {
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  background: rgba(15, 23, 42, 0.84);
+  color: #cbd5e1;
+}
+
+.delete-post-modal-actions button:last-child {
+  border: 1px solid rgba(248, 113, 113, 0.45);
+  background: rgba(127, 29, 29, 0.36);
+  color: #fecaca;
+  box-shadow: 0 0 18px rgba(248, 113, 113, 0.16);
+}
+
+@keyframes delete-post-modal-globe-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

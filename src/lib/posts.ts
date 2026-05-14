@@ -47,5 +47,9 @@ export const createOrUpdatePost = async ({
 };
 
 export const getCreatedPosts = (): Post[] => {
+  if (typeof window === "undefined") {
+    return [];
+  }
+
   return JSON.parse(localStorage.getItem("createdPosts") ?? "[]") as Post[];
 };

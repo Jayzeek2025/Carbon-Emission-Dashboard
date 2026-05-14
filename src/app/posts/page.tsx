@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import AppShell from "@/components/layout/AppShell";
+import DeletePostModal from "@/components/posts/DeletePostModal";
 import PostForm from "@/components/posts/PostForm";
 import PostsPanel from "@/components/posts/PostsPanel";
 import ErrorState from "@/components/ui/ErrorState";
@@ -18,6 +19,7 @@ export default function PostsPage() {
   const [createdPosts, setCreatedPosts] = useState<Post[]>(() =>
     getCreatedPosts(),
   );
+  const [postToDelete, setPostToDelete] = useState<Post | null>(null);
 
   if (loading) {
     return (
@@ -63,19 +65,24 @@ export default function PostsPage() {
   };
 
   const handleDeletePost = (postId: string) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this post?",
-    );
+    const selectedPost = allPosts.find((post) => post.id === postId) ?? null;
 
-    if (!confirmed) {
+    setPostToDelete(selectedPost);
+  };
+
+  const confirmDeletePost = () => {
+    if (!postToDelete) {
       return;
     }
 
-    const updatedPosts = createdPosts.filter((post) => post.id !== postId);
+    const updatedPosts = createdPosts.filter(
+      (post) => post.id !== postToDelete.id,
+    );
 
     localStorage.setItem("createdPosts", JSON.stringify(updatedPosts));
     setCreatedPosts(updatedPosts);
     setEditingPost(null);
+    setPostToDelete(null);
   };
 
   return (
@@ -109,6 +116,14 @@ export default function PostsPage() {
           onDeletePost={handleDeletePost}
         />
       </main>
+
+      {postToDelete && (
+        <DeletePostModal
+          post={postToDelete}
+          onClose={() => setPostToDelete(null)}
+          onConfirm={confirmDeletePost}
+        />
+      )}
     </AppShell>
   );
 }
