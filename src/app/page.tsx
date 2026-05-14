@@ -9,7 +9,6 @@ import LoadingState from "@/components/ui/LoadingState";
 import MonthlyEmissionsChart from "@/components/dashboard/MonthlyEmissionsChart";
 import EmissionsBySourceChart from "@/components/dashboard/EmissionsBySourceChart";
 import DashboardOverview from "@/components/dashboard/DashboardOverview";
-import InsightsPanel from "@/components/dashboard/InsightsPanel";
 import { useDashboardData } from "@/hooks/useDashboardData";
 
 export default function Home() {
@@ -17,7 +16,8 @@ export default function Home() {
 
   const [selectedCompany, setSelectedCompany] = useState("all");
   const [selectedCountry, setSelectedCountry] = useState("all");
-  const [selectedMonth, setSelectedMonth] = useState("all");
+  const [selectedFromMonth, setSelectedFromMonth] = useState("all");
+  const [selectedToMonth, setSelectedToMonth] = useState("all");
   const [selectedSource, setSelectedSource] = useState("all");
 
   const allEmissions = companies.flatMap((company) => company.emissions);
@@ -48,14 +48,16 @@ export default function Home() {
   const handleClearFilters = () => {
     setSelectedCompany("all");
     setSelectedCountry("all");
-    setSelectedMonth("all");
+    setSelectedFromMonth("all");
+    setSelectedToMonth("all");
     setSelectedSource("all");
   };
 
   const hasActiveFilters =
     selectedCompany !== "all" ||
     selectedCountry !== "all" ||
-    selectedMonth !== "all" ||
+    selectedFromMonth !== "all" ||
+    selectedToMonth !== "all" ||
     selectedSource !== "all";
 
   const filteredCompanies = companies
@@ -69,10 +71,16 @@ export default function Home() {
     .map((company) => ({
       ...company,
       emissions: company.emissions
-        .filter(
-          (emission) =>
-            selectedMonth === "all" || emission.yearMonth === selectedMonth,
-        )
+        .filter((emission) => {
+          const isAfterFromMonth =
+            selectedFromMonth === "all" ||
+            emission.yearMonth >= selectedFromMonth;
+
+          const isBeforeToMonth =
+            selectedToMonth === "all" || emission.yearMonth <= selectedToMonth;
+
+          return isAfterFromMonth && isBeforeToMonth;
+        })
         .filter(
           (emission) =>
             selectedSource === "all" || emission.source === selectedSource,
@@ -91,11 +99,13 @@ export default function Home() {
             sources={sources}
             selectedCompany={selectedCompany}
             selectedCountry={selectedCountry}
-            selectedMonth={selectedMonth}
+            selectedFromMonth={selectedFromMonth}
+            selectedToMonth={selectedToMonth}
             selectedSource={selectedSource}
             onCompanyChange={handleCompanyChange}
             onCountryChange={setSelectedCountry}
-            onMonthChange={setSelectedMonth}
+            onFromMonthChange={setSelectedFromMonth}
+            onToMonthChange={setSelectedToMonth}
             onSourceChange={setSelectedSource}
             onClearFilters={handleClearFilters}
             hasActiveFilters={hasActiveFilters}
@@ -118,14 +128,16 @@ export default function Home() {
               countries.find((country) => country.code === selectedCountry)
                 ?.name ?? "All Countries"
             }
-            selectedMonth={selectedMonth}
+            selectedFromMonth={selectedFromMonth}
+            selectedToMonth={selectedToMonth}
             selectedSource={selectedSource}
             totalCompanies={filteredCompanies.length}
+            companies={filteredCompanies}
+            countries={countries}
           />
-          <SummaryCards companies={filteredCompanies} />
+          <SummaryCards companies={filteredCompanies} countries={countries} />
           <MonthlyEmissionsChart companies={filteredCompanies} />
           <EmissionsBySourceChart companies={filteredCompanies} />
-          <InsightsPanel companies={filteredCompanies} />
         </>
       )}
     </AppShell>

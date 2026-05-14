@@ -14,7 +14,8 @@ export default function CompaniesPage() {
 
   const [selectedCompany, setSelectedCompany] = useState("all");
   const [selectedCountry, setSelectedCountry] = useState("all");
-  const [selectedMonth, setSelectedMonth] = useState("all");
+  const [selectedFromMonth, setSelectedFromMonth] = useState("all");
+  const [selectedToMonth, setSelectedToMonth] = useState("all");
   const [selectedSource, setSelectedSource] = useState("all");
 
   const allEmissions = companies.flatMap((company) => company.emissions);
@@ -45,14 +46,16 @@ export default function CompaniesPage() {
   const handleClearFilters = () => {
     setSelectedCompany("all");
     setSelectedCountry("all");
-    setSelectedMonth("all");
+    setSelectedFromMonth("all");
+    setSelectedToMonth("all");
     setSelectedSource("all");
   };
 
   const hasActiveFilters =
     selectedCompany !== "all" ||
     selectedCountry !== "all" ||
-    selectedMonth !== "all" ||
+    selectedFromMonth !== "all" ||
+    selectedToMonth !== "all" ||
     selectedSource !== "all";
 
   const filteredCompanies = companies
@@ -66,10 +69,23 @@ export default function CompaniesPage() {
     .map((company) => ({
       ...company,
       emissions: company.emissions
-        .filter(
-          (emission) =>
-            selectedMonth === "all" || emission.yearMonth === selectedMonth,
-        )
+        .filter((emission) => {
+          if (
+            selectedFromMonth !== "all" &&
+            emission.yearMonth < selectedFromMonth
+          ) {
+            return false;
+          }
+
+          if (
+            selectedToMonth !== "all" &&
+            emission.yearMonth > selectedToMonth
+          ) {
+            return false;
+          }
+
+          return true;
+        })
         .filter(
           (emission) =>
             selectedSource === "all" || emission.source === selectedSource,
@@ -88,11 +104,13 @@ export default function CompaniesPage() {
             sources={sources}
             selectedCompany={selectedCompany}
             selectedCountry={selectedCountry}
-            selectedMonth={selectedMonth}
+            selectedFromMonth={selectedFromMonth}
+            selectedToMonth={selectedToMonth}
             selectedSource={selectedSource}
             onCompanyChange={handleCompanyChange}
             onCountryChange={setSelectedCountry}
-            onMonthChange={setSelectedMonth}
+            onFromMonthChange={setSelectedFromMonth}
+            onToMonthChange={setSelectedToMonth}
             onSourceChange={setSelectedSource}
             onClearFilters={handleClearFilters}
             hasActiveFilters={hasActiveFilters}
@@ -105,7 +123,10 @@ export default function CompaniesPage() {
       {error && !loading && <ErrorState message={error} onRetry={refetch} />}
 
       {!loading && !error && (
-        <CompanyEmissionsTable companies={filteredCompanies} />
+        <CompanyEmissionsTable
+          companies={filteredCompanies}
+          countries={countries}
+        />
       )}
     </AppShell>
   );

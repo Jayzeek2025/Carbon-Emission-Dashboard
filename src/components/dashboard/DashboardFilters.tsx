@@ -13,15 +13,17 @@ type DashboardFiltersProps = {
 
   months: string[];
   sources: string[];
-  selectedMonth: string;
-  selectedSource: string;
 
+  selectedFromMonth: string;
+  selectedToMonth: string;
+  selectedSource: string;
   selectedCompany: string;
   selectedCountry: string;
 
   onCompanyChange: (value: string) => void;
   onCountryChange: (value: string) => void;
-  onMonthChange: (value: string) => void;
+  onFromMonthChange: (value: string) => void;
+  onToMonthChange: (value: string) => void;
   onSourceChange: (value: string) => void;
   onClearFilters: () => void;
   hasActiveFilters: boolean;
@@ -34,11 +36,13 @@ export default function DashboardFilters({
   sources,
   selectedCompany,
   selectedCountry,
-  selectedMonth,
+  selectedFromMonth,
+  selectedToMonth,
   selectedSource,
   onCompanyChange,
   onCountryChange,
-  onMonthChange,
+  onFromMonthChange,
+  onToMonthChange,
   onSourceChange,
   onClearFilters,
   hasActiveFilters,
@@ -70,10 +74,22 @@ export default function DashboardFilters({
       </select>
 
       <select
-        value={selectedMonth}
-        onChange={(event) => onMonthChange(event.target.value)}
+        value={selectedFromMonth}
+        onChange={(event) => onFromMonthChange(event.target.value)}
       >
-        <option value="all">All Months</option>
+        <option value="all">From Month</option>
+        {months.map((month) => (
+          <option key={month} value={month}>
+            {month}
+          </option>
+        ))}
+      </select>
+
+      <select
+        value={selectedToMonth}
+        onChange={(event) => onToMonthChange(event.target.value)}
+      >
+        <option value="all">To Month</option>
         {months.map((month) => (
           <option key={month} value={month}>
             {month}

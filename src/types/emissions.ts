@@ -1,6 +1,7 @@
 export type Country = {
   code: string;
   name: string;
+  carbonTaxRate: number;
 };
 
 export type GhgEmission = {

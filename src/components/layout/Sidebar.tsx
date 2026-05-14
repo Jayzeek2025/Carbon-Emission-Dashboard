@@ -8,7 +8,6 @@ import SidebarCarbonMonitor from "./SidebarCarbonMonitor";
 const menuItems = [
   { label: "Dashboard", path: "/" },
   { label: "Companies", path: "/companies" },
-  { label: "Reports", path: "/reports" },
   { label: "Posts", path: "/posts" },
   { label: "Settings", path: "/settings" },
 ];

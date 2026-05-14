@@ -167,3 +167,19 @@ export function getLargestMonthIncrease(companies: Company[]) {
 
   return result;
 }
+
+export function getCountryTaxRate(countryCode: string, countries: Country[]) {
+  const country = countries.find((country) => country.code === countryCode);
+
+  return country?.carbonTaxRate ?? 0;
+}
+
+export function getEstimatedCarbonTax(
+  emissions: number,
+  countryCode: string,
+  countries: Country[],
+) {
+  const taxRate = getCountryTaxRate(countryCode, countries);
+
+  return emissions * taxRate;
+}

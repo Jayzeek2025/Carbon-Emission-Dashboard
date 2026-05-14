@@ -1,9 +1,10 @@
 import Card from "@/components/ui/Card";
-import type { Company } from "@/types/emissions";
+import type { Company, Country } from "@/types/emissions";
+
 import {
   getCompanyTotalEmissions,
+  getEstimatedCarbonTax,
   getHighestEmittingCompany,
-  getLowestEmittingCompany,
   getMonthlyChangePercentage,
   getMonthlyTotals,
   getTotalEmissions,
@@ -13,12 +14,24 @@ import "./SummaryCards.css";
 
 type SummaryCardsProps = {
   companies: Company[];
+  countries: Country[];
 };
 
-export default function SummaryCards({ companies }: SummaryCardsProps) {
+export default function SummaryCards({
+  companies,
+  countries,
+}: SummaryCardsProps) {
   const totalEmissions = getTotalEmissions(companies);
   const highestEmittingCompany = getHighestEmittingCompany(companies);
-  const lowestEmittingCompany = getLowestEmittingCompany(companies);
+
+  const estimatedCarbonTax = companies.reduce((total, company) => {
+    const companyEmissions = getCompanyTotalEmissions(company);
+
+    return (
+      total +
+      getEstimatedCarbonTax(companyEmissions, company.country, countries)
+    );
+  }, 0);
 
   const allEmissions = companies.flatMap((company) => company.emissions);
   const monthlyTotals = getMonthlyTotals(allEmissions);
@@ -67,21 +80,14 @@ export default function SummaryCards({ companies }: SummaryCardsProps) {
       </Card>
 
       <Card className="summary-card">
-        <div className="summary-card__label">Lowest Emitting Company</div>
+        <div className="summary-card__label">Estimated Carbon Tax</div>
 
-        <div className="summary-card__value summary-card__value--company">
-          {lowestEmittingCompany?.name ?? "-"}
+        <div className="summary-card__value">
+          ₩{estimatedCarbonTax.toLocaleString()}
         </div>
 
-        <div className="summary-card__unit">
-          {lowestEmittingCompany
-            ? `${getCompanyTotalEmissions(
-                lowestEmittingCompany,
-              ).toLocaleString()} tonnes CO2e`
-            : "No emissions data"}
-        </div>
-
-        <div className="summary-card__meta">Best current performer</div>
+        <div className="summary-card__unit">projected liability</div>
+        <div className="summary-card__meta">Based on country tax rates</div>
       </Card>
 
       <Card className="summary-card">

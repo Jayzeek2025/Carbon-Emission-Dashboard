@@ -51,8 +51,9 @@
    gap: 12px;
 }
 
-.company-emissions-search{
+.company-emissions-search {
    height: 40px;
+   min-width: 220px;
    border: 1px solid rgba(57, 255, 20, 0.28);
    border-radius: 12px;
    background: rgba(15, 23, 42, 0.8);
@@ -62,15 +63,11 @@
    transition: all 0.2s ease;
 }
 
-.company-emissions-search {
-   min-width: 220px;
-}
-
 .company-emissions-search::placeholder {
    color: #64748b;
 }
 
-.company-emissions-search:focus{
+.company-emissions-search:focus {
    border-color: #39ff14;
    box-shadow:
       0 0 8px rgba(57, 255, 20, 0.28),
@@ -93,7 +90,7 @@
 
 .company-emissions-table {
    width: 100%;
-   min-width: 780px;
+   min-width: 980px;
    border-collapse: collapse;
 }
 
@@ -124,13 +121,8 @@
 }
 
 .company-emissions-table tbody tr:hover td {
-   background: rgba(34, 197, 94, 0.12);
-   border-color: #39ff14;
-   box-shadow:
-      0 0 8px rgba(57, 255, 20, 0.35),
-      0 0 18px rgba(57, 255, 20, 0.22),
-      inset 0 0 10px rgba(57, 255, 20, 0.06);
-   transition: all 0.2s ease;
+   background: rgba(34, 197, 94, 0.08);
+   border-color: rgba(57, 255, 20, 0.28);
 }
 
 .company-emissions-sort-button {
@@ -149,9 +141,55 @@
    color: #39ff14;
 }
 
+.company-emissions-company {
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+}
+
+.company-emissions-company-name {
+   color: #f8fafc;
+   font-weight: 600;
+}
+
+.company-emissions-company-risk {
+   color: #64748b;
+   font-size: 11px;
+}
+
+.company-emissions-source {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   padding: 6px 12px;
+   border-radius: 999px;
+   background: rgba(57, 255, 20, 0.08);
+   border: 1px solid rgba(57, 255, 20, 0.16);
+   color: #d8ffe0;
+   font-size: 12px;
+   font-weight: 600;
+   text-transform: capitalize;
+   letter-spacing: 0.02em;
+}
+
+.company-emissions-tax {
+   color: #f8fafc;
+   font-weight: 700;
+   letter-spacing: -0.01em;
+}
+
+.company-emissions-tax-subtext {
+   display: block;
+   margin-top: 4px;
+   color: #64748b;
+   font-size: 11px;
+   font-weight: 500;
+}
+
 .company-emissions-trend {
    display: inline-flex;
    align-items: center;
+   gap: 6px;
    font-weight: 700;
 }
 
@@ -165,6 +203,26 @@
 
 .company-emissions-trend--stable {
    color: #94a3b8;
+}
+
+.company-emissions-trend--up::before {
+   content: "↑";
+   font-size: 12px;
+}
+
+.company-emissions-trend--down::before {
+   content: "↓";
+   font-size: 12px;
+}
+
+.company-emissions-trend--stable::before {
+   content: "•";
+   font-size: 12px;
+}
+
+.company-emissions-table tbody tr:hover .company-emissions-source {
+   border-color: rgba(57, 255, 20, 0.4);
+   background: rgba(57, 255, 20, 0.14);
 }
 
 .company-emissions-table-empty {
