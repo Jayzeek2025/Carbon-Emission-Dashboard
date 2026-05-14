@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 
+import { createOrUpdatePost } from "@/lib/posts";
 import type { Company } from "@/types/emissions";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -21,11 +23,14 @@ type PostFormErrors = {
 };
 
 export default function PostForm({ companies }: PostFormProps) {
+  const router = useRouter();
+
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");
   const [month, setMonth] = useState<Date | null>(null);
   const [content, setContent] = useState("");
   const [errors, setErrors] = useState<PostFormErrors>({});
+  const [isSaving, setIsSaving] = useState(false);
 
   const validateForm = () => {
     const nextErrors: PostFormErrors = {};
@@ -51,23 +56,33 @@ export default function PostForm({ companies }: PostFormProps) {
     return Object.keys(nextErrors).length === 0;
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!validateForm() || !month) {
+    if (!validateForm()) {
       return;
     }
 
-    const selectedMonth = `${month.getFullYear()}-${String(
-      month.getMonth() + 1,
-    ).padStart(2, "0")}`;
+    try {
+      setIsSaving(true);
 
-    console.log({
-      title,
-      company,
-      month: selectedMonth,
-      content,
-    });
+      await createOrUpdatePost({
+        title,
+        companyId: company,
+        month: month?.toISOString().slice(0, 7) ?? "",
+        content,
+      });
+
+      setTitle("");
+      setCompany("");
+      setMonth(null);
+      setContent("");
+      setErrors({});
+
+      router.push("/posts");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -148,6 +163,9 @@ export default function PostForm({ companies }: PostFormProps) {
               showMonthYearPicker
               placeholderText="Select month"
               className="post-datepicker"
+              popperPlacement="bottom-start"
+              popperClassName="post-datepicker-popper"
+              calendarClassName="post-datepicker-calendar"
             />
 
             {errors.month && <p className="post-form-error">{errors.month}</p>}
@@ -181,8 +199,12 @@ export default function PostForm({ companies }: PostFormProps) {
             Back
           </Link>
 
-          <button className="post-submit-button" type="submit">
-            Publish Post
+          <button
+            className="post-submit-button"
+            type="submit"
+            disabled={isSaving}
+          >
+            {isSaving ? "Publishing..." : "Publish Post"}
           </button>
         </div>
       </form>

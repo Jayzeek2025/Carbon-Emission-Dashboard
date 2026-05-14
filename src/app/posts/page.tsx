@@ -7,6 +7,7 @@ import PostsPanel from "@/components/posts/PostsPanel";
 import ErrorState from "@/components/ui/ErrorState";
 import LoadingState from "@/components/ui/LoadingState";
 import { useDashboardData } from "@/hooks/useDashboardData";
+import { getCreatedPosts } from "@/lib/posts";
 
 export default function PostsPage() {
   const { companies, posts, loading, error, refetch } = useDashboardData();
@@ -31,6 +32,9 @@ export default function PostsPage() {
     );
   }
 
+  const createdPosts = getCreatedPosts();
+  const allPosts = [...createdPosts, ...posts];
+
   return (
     <AppShell>
       <div className="posts-header-actions">
@@ -46,7 +50,7 @@ export default function PostsPage() {
           <p>Latest company sustainability updates.</p>
         </div>
 
-        <PostsPanel posts={posts} companies={companies} />
+        <PostsPanel posts={allPosts} companies={companies} />
       </main>
     </AppShell>
   );
