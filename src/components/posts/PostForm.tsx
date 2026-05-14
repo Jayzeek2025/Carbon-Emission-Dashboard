@@ -31,6 +31,7 @@ export default function PostForm({ companies }: PostFormProps) {
   const [content, setContent] = useState("");
   const [errors, setErrors] = useState<PostFormErrors>({});
   const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   const validateForm = () => {
     const nextErrors: PostFormErrors = {};
@@ -61,6 +62,32 @@ export default function PostForm({ companies }: PostFormProps) {
 
     if (!validateForm()) {
       return;
+    }
+    try {
+      setIsSaving(true);
+
+      await createOrUpdatePost({
+        title,
+        companyId: company,
+        month: month?.toISOString().slice(0, 7) ?? "",
+        content,
+      });
+
+      setTitle("");
+      setCompany("");
+      setMonth(null);
+      setContent("");
+      setErrors({});
+
+      router.push("/posts");
+    } catch (error) {
+      setSaveError(
+        error instanceof Error
+          ? error.message
+          : "Failed to save post. Please try again.",
+      );
+    } finally {
+      setIsSaving(false);
     }
 
     try {
@@ -95,6 +122,8 @@ export default function PostForm({ companies }: PostFormProps) {
           updates.
         </p>
       </div>
+
+      {saveError && <div className="post-form-save-error">{saveError}</div>}
 
       <form className="post-form" onSubmit={handleSubmit}>
         <div className="post-form-grid">

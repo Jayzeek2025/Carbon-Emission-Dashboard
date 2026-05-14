@@ -15,6 +15,12 @@ export const createOrUpdatePost = async ({
 }: CreatePostPayload): Promise<Post> => {
   await new Promise((resolve) => setTimeout(resolve, 800));
 
+  const shouldFail = Math.random() < 0.2;
+
+  if (shouldFail) {
+    throw new Error("Failed to save post. Please try again.");
+  }
+
   const newPost: Post = {
     id: crypto.randomUUID(),
     title,

@@ -184,6 +184,36 @@
   backdrop-filter: blur(10px);
 }
 
+.posts-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.posts-pagination button {
+  min-width: 110px;
+  height: 42px;
+  border: 1px solid rgba(34, 197, 94, 0.24);
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.86);
+  color: #dcfce7;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.posts-pagination button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.posts-pagination span {
+  color: #8ea0b8;
+  font-size: 14px;
+  font-weight: 600;
+}
+
 @media (max-width: 768px) {
   .posts-header-actions {
     position: static;
