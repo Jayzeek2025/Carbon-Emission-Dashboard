@@ -9,11 +9,18 @@ import "./PostsPanel.css";
 type PostsPanelProps = {
   posts: Post[];
   companies: Company[];
+  onEditPost: (post: Post) => void;
+  onDeletePost: (postId: string) => void;
 };
 
 const POSTS_PER_PAGE = 3;
 
-export default function PostsPanel({ posts, companies }: PostsPanelProps) {
+export default function PostsPanel({
+  posts,
+  companies,
+  onEditPost,
+  onDeletePost,
+}: PostsPanelProps) {
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
@@ -43,7 +50,26 @@ export default function PostsPanel({ posts, companies }: PostsPanelProps) {
           <article className="post-card" key={post.id}>
             <div className="post-card-header">
               <h3>{post.title}</h3>
-              <span>{post.dateTime}</span>
+
+              <div className="post-card-actions">
+                <span>{post.dateTime}</span>
+
+                <button
+                  className="post-edit-button"
+                  type="button"
+                  onClick={() => onEditPost(post)}
+                >
+                  Edit
+                </button>
+
+                <button
+                  className="post-delete-button"
+                  type="button"
+                  onClick={() => onDeletePost(post.id)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
 
             <p className="post-company">{getCompanyName(post.resourceUid)}</p>

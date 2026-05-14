@@ -9,7 +9,6 @@ const menuItems = [
   { label: "Dashboard", path: "/" },
   { label: "Companies", path: "/companies" },
   { label: "Posts", path: "/posts" },
-  { label: "Settings", path: "/settings" },
 ];
 
 export default function Sidebar() {

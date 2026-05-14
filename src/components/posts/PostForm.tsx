@@ -1,18 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import DatePicker from "react-datepicker";
 
 import { createOrUpdatePost } from "@/lib/posts";
-import type { Company } from "@/types/emissions";
+
+import type { Company, Post } from "@/types/emissions";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./PostForm.css";
 
 type PostFormProps = {
   companies: Company[];
+  editingPost?: Post | null;
+  onPostSaved?: (post: Post) => void;
+  onCancelEdit?: () => void;
 };
 
 type PostFormErrors = {
@@ -22,13 +26,23 @@ type PostFormErrors = {
   content?: string;
 };
 
-export default function PostForm({ companies }: PostFormProps) {
+export default function PostForm({
+  companies,
+  editingPost,
+  onPostSaved,
+  onCancelEdit,
+}: PostFormProps) {
   const router = useRouter();
 
-  const [title, setTitle] = useState("");
-  const [company, setCompany] = useState("");
-  const [month, setMonth] = useState<Date | null>(null);
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState(editingPost?.title ?? "");
+
+  const [company, setCompany] = useState(editingPost?.resourceUid ?? "");
+
+  const [month, setMonth] = useState<Date | null>(
+    editingPost ? new Date(`${editingPost.dateTime}-01`) : null,
+  );
+
+  const [content, setContent] = useState(editingPost?.content ?? "");
   const [errors, setErrors] = useState<PostFormErrors>({});
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState("");
@@ -63,21 +77,34 @@ export default function PostForm({ companies }: PostFormProps) {
     if (!validateForm()) {
       return;
     }
+
+    setSaveError("");
+
     try {
       setIsSaving(true);
 
-      await createOrUpdatePost({
+      const selectedMonth = month?.toISOString().slice(0, 7) ?? "";
+
+      const savedPost = await createOrUpdatePost({
+        id: editingPost?.id,
         title,
         companyId: company,
-        month: month?.toISOString().slice(0, 7) ?? "",
+        month: selectedMonth,
         content,
       });
+
+      onPostSaved?.(savedPost);
 
       setTitle("");
       setCompany("");
       setMonth(null);
       setContent("");
       setErrors({});
+
+      if (editingPost) {
+        onCancelEdit?.();
+        return;
+      }
 
       router.push("/posts");
     } catch (error) {
@@ -89,33 +116,16 @@ export default function PostForm({ companies }: PostFormProps) {
     } finally {
       setIsSaving(false);
     }
-
-    try {
-      setIsSaving(true);
-
-      await createOrUpdatePost({
-        title,
-        companyId: company,
-        month: month?.toISOString().slice(0, 7) ?? "",
-        content,
-      });
-
-      setTitle("");
-      setCompany("");
-      setMonth(null);
-      setContent("");
-      setErrors({});
-
-      router.push("/posts");
-    } finally {
-      setIsSaving(false);
-    }
   };
 
   return (
     <section className="post-form-panel">
       <div className="post-form-header">
-        <h2>Create Sustainability Post</h2>
+        <h2>
+          {editingPost
+            ? "Edit Sustainability Post"
+            : "Create Sustainability Post"}
+        </h2>
 
         <p>
           Publish company sustainability initiatives and emission reduction
@@ -137,6 +147,7 @@ export default function PostForm({ companies }: PostFormProps) {
               value={title}
               onChange={(event) => {
                 setTitle(event.target.value);
+
                 setErrors((currentErrors) => ({
                   ...currentErrors,
                   title: undefined,
@@ -155,6 +166,7 @@ export default function PostForm({ companies }: PostFormProps) {
               value={company}
               onChange={(event) => {
                 setCompany(event.target.value);
+
                 setErrors((currentErrors) => ({
                   ...currentErrors,
                   company: undefined,
@@ -179,10 +191,10 @@ export default function PostForm({ companies }: PostFormProps) {
             <label htmlFor="month">Month</label>
 
             <DatePicker
-              id="month"
               selected={month}
               onChange={(date: Date | null) => {
                 setMonth(date);
+
                 setErrors((currentErrors) => ({
                   ...currentErrors,
                   month: undefined,
@@ -192,9 +204,6 @@ export default function PostForm({ companies }: PostFormProps) {
               showMonthYearPicker
               placeholderText="Select month"
               className="post-datepicker"
-              popperPlacement="bottom-start"
-              popperClassName="post-datepicker-popper"
-              calendarClassName="post-datepicker-calendar"
             />
 
             {errors.month && <p className="post-form-error">{errors.month}</p>}
@@ -211,6 +220,7 @@ export default function PostForm({ companies }: PostFormProps) {
             value={content}
             onChange={(event) => {
               setContent(event.target.value);
+
               setErrors((currentErrors) => ({
                 ...currentErrors,
                 content: undefined,
@@ -224,16 +234,32 @@ export default function PostForm({ companies }: PostFormProps) {
         </div>
 
         <div className="post-form-actions">
-          <Link className="back-posts-button" href="/posts">
-            Back
-          </Link>
+          {editingPost ? (
+            <button
+              className="back-posts-button"
+              type="button"
+              onClick={onCancelEdit}
+            >
+              Cancel
+            </button>
+          ) : (
+            <Link className="back-posts-button" href="/posts">
+              Back
+            </Link>
+          )}
 
           <button
             className="post-submit-button"
             type="submit"
             disabled={isSaving}
           >
-            {isSaving ? "Publishing..." : "Publish Post"}
+            {isSaving
+              ? editingPost
+                ? "Saving..."
+                : "Publishing..."
+              : editingPost
+                ? "Save Changes"
+                : "Publish Post"}
           </button>
         </div>
       </form>
